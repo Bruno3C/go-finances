@@ -19,6 +19,8 @@ export const Header = styled.View`
   height: ${RFPercentage(42)}px;
 
   background-color: ${({theme}) => theme.colors.primary};
+
+  justify-content: center;
 `;
 
 export const UserWrapper = styled.View`
@@ -64,3 +66,9 @@ export const Icon = styled(Feather)`
   color: ${({theme}) => theme.colors.secondary};
   font-size: ${RFValue(24)}px;
 `;
+
+export const HighlightCards = styled.ScrollView.attrs({
+  horizontal: true,
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: { paddingHorizontal: 24 }
+})``;
