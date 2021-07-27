@@ -11,6 +11,7 @@ import {
   User, 
   UserGreeting, 
   UserName,
+  LogoutButton,
   Icon,
   HighlightCards,
   Transactions,
@@ -60,6 +61,7 @@ export function Dashboard() {
   ]
   return (
     <Container>
+      
       <Header>
         <UserWrapper>
           <UserInfo>
@@ -69,11 +71,16 @@ export function Dashboard() {
               <UserName>Bruno</UserName>
             </User>
           </UserInfo>
-          <Icon 
-            name="power"
-          />
+          <LogoutButton
+            onPress={() => {}}
+          >
+            <Icon 
+              name="power"
+            />
+          </LogoutButton>
         </UserWrapper>
       </Header>
+      
       <HighlightCards>
         <HighlightCard
           type="up"
@@ -95,6 +102,7 @@ export function Dashboard() {
         />
 
       </HighlightCards>
+      
       <Transactions>
         <Title>Listagem</Title>
 
@@ -108,6 +116,7 @@ export function Dashboard() {
           }
         />
       </Transactions>
+    
     </Container>
   );
 }
