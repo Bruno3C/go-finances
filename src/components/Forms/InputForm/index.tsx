@@ -5,17 +5,19 @@ import { Control, Controller } from 'react-hook-form';
 import { Input } from '../Input';
 
 import {
-  Container
+  Container, Error
 } from './styles';
 
 interface Props extends TextInputProps {
   control: Control;
   name: string;
+  error: string;
 }
 
 export function InputForm({
   control,
   name,
+  error,
   ...rest
 }: Props) {
   return(
@@ -31,6 +33,7 @@ export function InputForm({
           />
         )}
       />
+      { error && <Error>{ error }</Error> }
     </Container>
   )
 }
