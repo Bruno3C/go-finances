@@ -5,6 +5,7 @@ import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { useTheme } from 'styled-components';
 
 import { 
   Container,
@@ -20,8 +21,10 @@ import {
   HighlightCards,
   Transactions,
   Title,
-  TransactionList
+  TransactionList,
+  LoadContainer
 } from './styles';
+import { ActivityIndicator } from 'react-native';
 
 export interface DataListProps extends TransactionCardProps {
   id: string;
@@ -38,10 +41,13 @@ interface HighlightData {
 }
 
 export function Dashboard() {
+  const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState<DataListProps[]>([]);
   const [highlightData, setHighlightData] = useState<HighlightData>(
     {} as HighlightData
   );
+
+  const theme = useTheme();
 
   async function loadTransactions() {
     const dataKey = '@gofinances:transactions';
@@ -106,7 +112,9 @@ export function Dashboard() {
           currency: 'BRL'
         })
       }
-    })
+    });
+
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -119,50 +127,58 @@ export function Dashboard() {
 
   return (
     <Container>
-      
-      <Header>
-        <UserWrapper>
-          <UserInfo>
-            <Photo source={{ uri: 'https://avatars.githubusercontent.com/u/43102163?v=4.png'}}/>
-            <User>
-              <UserGreeting>Olá, </UserGreeting>
-              <UserName>Bruno</UserName>
-            </User>
-          </UserInfo>
-          <LogoutButton
-            onPress={() => {}}
-          >
-            <Icon 
-              name="power"
+      {
+        isLoading ?
+          <LoadContainer>
+            <ActivityIndicator 
+              color={theme.colors.primary}
+              size="large"
             />
-          </LogoutButton>
-        </UserWrapper>
-      </Header>
-      
-      <HighlightCards>
+          </LoadContainer> :
+        <>
+          <Header>
+            <UserWrapper>
+              <UserInfo>
+                <Photo source={{ uri: 'https://avatars.githubusercontent.com/u/43102163?v=4.png'}}/>
+                <User>
+                  <UserGreeting>Olá, </UserGreeting>
+                  <UserName>Bruno</UserName>
+                </User>
+              </UserInfo>
+              <LogoutButton
+                onPress={() => {}}
+              >
+                <Icon 
+                  name="power"
+                />
+              </LogoutButton>
+            </UserWrapper>
+          </Header>
+          
+          <HighlightCards>
 
-        <HighlightCard
-          type="up"
-          title="Entradas"
-          amount={highlightData.entries.amount}
-          lastTransaction="Última entrada dia 13 de abril"
-        />
-        <HighlightCard
-          type="down"
-          title="Saídas"
-          amount={highlightData.expensives.amount}
-          lastTransaction="Última saída dia 03 de abril"
-        />
-        <HighlightCard
-          type="total"
-          title="Total"
-          amount={highlightData.total.amount}
-          lastTransaction="01 à 16 de abril"
-        />
+            <HighlightCard
+              type="up"
+              title="Entradas"
+              amount={highlightData.entries.amount}
+              lastTransaction="Última entrada dia 13 de abril"
+            />
+            <HighlightCard
+              type="down"
+              title="Saídas"
+              amount={highlightData.expensives.amount}
+              lastTransaction="Última saída dia 03 de abril"
+            />
+            <HighlightCard
+              type="total"
+              title="Total"
+              amount={highlightData.total.amount}
+              lastTransaction="01 à 16 de abril"
+            />
 
-      </HighlightCards>
-      
-      <Transactions>
+          </HighlightCards>
+          
+          <Transactions>
         <Title>Listagem</Title>
 
         <TransactionList
@@ -175,7 +191,8 @@ export function Dashboard() {
           }
         />
       </Transactions>
-    
+        </>
+      }
     </Container>
   );
 }
