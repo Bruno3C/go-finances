@@ -5,6 +5,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 
 import {  useTheme } from 'styled-components';
 
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+
 import { HistoryCard } from '../../components/HistoryCard';
 
 import {
@@ -12,7 +14,11 @@ import {
   Header,
   Title,
   Content,
-  ChartContainer
+  ChartContainer,
+  MonthSelect,
+  MountSelectButton,
+  MonthSelectIcon,
+  Month,
 } from './styles';
 import { categories } from '../../utils/categories';
 import { useState } from 'react';
@@ -97,7 +103,24 @@ export function Resume() {
       <Header>
         <Title>Resumo por categoria</Title>
       </Header>
-      <Content >
+      <Content 
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingBottom: useBottomTabBarHeight()
+        }}
+      >
+        <MonthSelect>
+          <MountSelectButton>
+            <MonthSelectIcon name="chevron-left"/>
+          </MountSelectButton>
+
+          <Month>Maio</Month>
+
+          <MountSelectButton>
+            <MonthSelectIcon name="chevron-right"/>
+          </MountSelectButton>
+        </MonthSelect>
         <ChartContainer>
           <VictoryPie 
             data={totalByCategories}
