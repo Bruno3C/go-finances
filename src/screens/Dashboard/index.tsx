@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
 
+import { useAuth } from '../../hooks/auth';
+
 import { 
   Container,
   Header, 
@@ -47,6 +49,8 @@ export function Dashboard() {
   const [highlightData, setHighlightData] = useState<HighlightData>(
     {} as HighlightData
   );
+
+  const { user, signOut } = useAuth();
 
   const theme = useTheme();
 
@@ -159,14 +163,14 @@ export function Dashboard() {
           <Header>
             <UserWrapper>
               <UserInfo>
-                <Photo source={{ uri: 'https://avatars.githubusercontent.com/u/43102163?v=4.png'}}/>
+                <Photo source={{ uri: user.photo }}/>
                 <User>
                   <UserGreeting>Olá, </UserGreeting>
-                  <UserName>Bruno</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
               <LogoutButton
-                onPress={() => {}}
+                onPress={signOut}
               >
                 <Icon 
                   name="power"
