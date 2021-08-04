@@ -21,6 +21,7 @@ import {
 } from './styles';
 import { ActivityIndicator, Alert } from 'react-native';
 import { useState } from 'react';
+import { Platform } from 'react-native';
 
 export function SignIn() {
   const [isLoading, setIsLoading] = useState(false);
@@ -80,11 +81,14 @@ export function SignIn() {
             svg={GoogleSvg}
             onPress={handleSignInWithGoogle}
           />
-          <SignInSocialButton 
-            title="Entrar com Apple"
-            svg={AppleSvg}
-            onPress={handleSignInWithApple}
-          />
+          { 
+            Platform.OS === 'ios' &&
+            <SignInSocialButton 
+              title="Entrar com Apple"
+              svg={AppleSvg}
+              onPress={handleSignInWithApple}
+            />
+          }
         </FooterWrapper>
         {
           isLoading &&
