@@ -1,14 +1,15 @@
 import React, { 
   useState
 } from 'react';
-import { useForm } from 'react-hook-form';
-
 import { 
   Modal,
   TouchableWithoutFeedback, 
   Keyboard,
   Alert 
 } from 'react-native';
+
+import { useForm } from 'react-hook-form';
+import { useAuth } from '../../hooks/auth';
 
 import uuid from 'react-native-uuid';
 
@@ -66,6 +67,7 @@ export function Register() {
     name: 'Categoria'
   });
 
+  const { user } = useAuth();
   const navigation = useNavigation();
 
   function handleTransactionsTypeSelect(type: 'positive' | 'negative') {
@@ -97,7 +99,7 @@ export function Register() {
     }
 
     try {
-      const dataKey = '@gofinances:transactions';
+      const dataKey = `@gofinances:transactions_user:${user.id}`;
       const data = await AsyncStorage.getItem(dataKey);
       const currentData = data ? JSON.parse(data) : [];
 

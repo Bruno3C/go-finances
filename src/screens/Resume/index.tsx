@@ -11,7 +11,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { addMonths, format, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-import {  useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
+import { useAuth } from '../../hooks/auth';
 
 import { HistoryCard } from '../../components/HistoryCard';
 
@@ -54,7 +55,8 @@ export function Resume() {
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>([]);
 
   const theme = useTheme();
-
+  const { user } = useAuth();
+ 
   function handleDateChange(action: 'next' | 'prev') {
     if(action === 'next') {
       setSelectedDate(addMonths(selectedDate, 1));
@@ -66,7 +68,7 @@ export function Resume() {
   async function loadData() {
     setIsLoading(true);
 
-    const dataKey = '@gofinances:transactions';
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted: TransactionData[] = response ? JSON.parse(response) : [];
 
