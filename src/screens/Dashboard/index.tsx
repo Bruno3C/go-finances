@@ -58,9 +58,14 @@ export function Dashboard() {
     collection: DataListProps[],
     type: 'positive' | 'negative'
   ) {
+    const collectionFilttered = collection
+    .filter(transaction => transaction.type === type);
+
+    if(collectionFilttered.length === 0)
+      return 0;
+
     const lastTransaction = 
-    new Date(Math.max.apply(Math, collection
-      .filter(transaction => transaction.type === type)
+    new Date(Math.max.apply(Math, collectionFilttered
       .map(transactions => new Date(transactions.date).getTime())  
     ));
 
@@ -109,32 +114,41 @@ export function Dashboard() {
 
     setTransactions(transactionsFormatted);
 
-    const total = entriesTotal - expensiveTotal;
-
+    
     const lastTransactionEntries = getLastTransactionDate(transactions, 'positive');
     const lastTransactionExpensives = getLastTransactionDate(transactions, 'negative');
-
+    
+    const totalInterval = lastTransactionExpensives === 0
+    ? 'Não há transações'
+    : `01 a ${lastTransactionExpensives}`;
+    
+    const total = entriesTotal - expensiveTotal;
+    
     setHighlightData({
       entries: {
         amount: entriesTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `Última entrada dia ${lastTransactionEntries}`
+        lastTransaction: lastTransactionEntries === 0 
+        ? 'Não há transações'
+        : `Última entrada dia ${lastTransactionEntries}`
       },
       expensives: {
         amount: expensiveTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `Última saída dia ${lastTransactionExpensives}`
+        lastTransaction: lastTransactionExpensives === 0 
+        ? 'Não há transações' 
+        : `Última saída dia ${lastTransactionExpensives}`
       },
       total: {
         amount: total.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `01 a ${lastTransactionExpensives}`
+        lastTransaction: totalInterval
       }
     });
 
