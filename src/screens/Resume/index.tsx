@@ -13,7 +13,6 @@ import { ptBR } from 'date-fns/locale';
 
 import {  useTheme } from 'styled-components';
 
-
 import { HistoryCard } from '../../components/HistoryCard';
 
 import { useFocusEffect } from '@react-navigation/native';
